@@ -1,0 +1,501 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>离线地图 1.0.226</title><style>
+body{background:#12151c;color:#d7dde8;font:14px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace;margin:0}
+header{position:sticky;top:0;background:#0b0e14;border-bottom:1px solid #22293a;padding:12px 20px;z-index:9}
+h1{font-size:16px;margin:0 0 6px;color:#8fd0ff}
+h2{font-size:15px;color:#ffd479;border-top:1px solid #22293a;padding-top:14px;margin:26px 0 8px}
+h3{font-size:13px;color:#9be08a;margin:14px 0 4px}
+nav a{color:#7fb4ff;margin-right:12px;text-decoration:none;font-size:12px}
+nav a:hover{text-decoration:underline}
+pre{background:#0e1118;border:1px solid #1b2231;border-radius:6px;padding:10px 12px;overflow:auto;white-space:pre}
+details>summary{cursor:pointer;color:#a8b6cc;padding:3px 0}
+details[open]>summary{color:#ffd479}
+.s{color:#a5e075}.c{color:#5f7188;font-style:italic}.k{color:#ff9ecb}
+.meta{color:#5f7188;font-weight:400}
+#q{background:#0b0e14;border:1px solid #2a3348;color:#d7dde8;padding:5px 8px;border-radius:5px;width:280px}
+</style></head><body>
+<header><h1>离线地图 1.0.226</h1><nav><a href="#pages-auth-auth-jsc">pages/auth/auth.jsc</a></nav><p><input id="q" placeholder="filter functions by name/signature"></p></header>
+<section id="pages-auth-auth-jsc"><h2>pages/auth/auth.jsc</h2>
+<h3>module entry <span class="meta">fn[entry] $k82(a0..a0) vars=0 stack=1 bc=13B</span></h3>
+<pre>    <span class="k">if</span> (<span class="k">this</span>) {
+        v0 = &lt;fn:default&gt;;
+        <span class="k">return</span>;
+    }
+L000c:
+    <span class="k">return</span>;</pre>
+<details><summary>fn[0] _interopRequireDefault(a0..a0) vars=0 stack=2 bc=21B</summary><pre>    <span class="k">if</span> (!(a0)) goto L000d;
+    <span class="k">if</span> (!(a0.__esModule)) goto L000d;
+    <span class="k">return</span> a0;
+L000d:   <span class="c">// 2 refs</span>
+    <span class="k">return</span> {default: a0};</pre></details>
+<details><summary>fn[1] &lt;null&gt;(a0..a0) vars=2 stack=4 bc=165B</summary><pre>    <span class="k">if</span> (!a0) {
+    L001a:
+        <span class="k">return</span>;
+    }
+L001b:
+    <span class="c">// try {  (catch at L0088)</span>
+    r0 = <span class="k">undefined</span>;
+    r0 = JSON.parse(a0);
+    <span class="k">if</span> (!r0) goto L006f;
+    <span class="k">if</span> (<span class="s">&quot;string&quot;</span> != <span class="k">typeof</span> r0.phase) goto L006f;
+    <span class="k">if</span> (<span class="s">&quot;string&quot;</span> != <span class="k">typeof</span> r0.request) goto L006f;
+L006f:   <span class="c">// 3 refs</span>
+    <span class="k">if</span> (<span class="s">&quot;number&quot;</span> != <span class="k">typeof</span> r0.revision) {
+        <span class="k">throw</span> <span class="k">new</span> Error(<span class="s">&quot;Invalid state&quot;</span>);
+    }
+L0080:
+    <span class="k">return</span>;
+    <span class="c">// } catch (exc27) {  (try at L001b)</span>
+L0088:
+    r1 = exc27;
+    <span class="c">// catch (handler -&gt; L001a)</span>
+    <span class="k">return</span>;
+    <span class="k">throw</span> <span class="s">&quot;string&quot;</span> != <span class="k">typeof</span> r0.phase;
+    <span class="k">return</span> !r0;</pre></details>
+<details><summary>fn[2] &lt;null&gt;(a0..a0) vars=0 stack=3 bc=21B</summary><pre>    <span class="k">return</span> v0({phase: <span class="s">&quot;blocked&quot;</span>, request: <span class="s">&quot;&quot;</span>});</pre></details>
+<details><summary>fn[3] state(a0..a0) vars=0 stack=4 bc=54B</summary><pre>    <span class="k">return</span>;</pre></details>
+<details><summary>fn[4] &lt;null&gt;(a0..a0) vars=0 stack=2 bc=5B</summary><pre>    <span class="k">return</span> v0(<span class="k">true</span>);</pre></details>
+<details><summary>fn[5] &lt;null&gt;(a0..a0) vars=0 stack=2 bc=5B</summary><pre>    <span class="k">return</span> v0(<span class="k">false</span>);</pre></details>
+<details><summary>fn[6] save(a0..a2) vars=0 stack=7 bc=95B</summary><pre>    <span class="k">return</span>;</pre></details>
+<details><summary>fn[7] enqueue(a0..a1) vars=0 stack=4 bc=28B</summary><pre>    <span class="k">return</span>;</pre></details>
+<details><summary>fn[8] &lt;null&gt;(a0..a0) vars=0 stack=4 bc=56B</summary><pre>    <span class="k">if</span> (v0) {
+    L0005:
+        <span class="k">return</span>;
+    }
+L0006:
+    v0 = <span class="k">true</span>;
+L000c:
+    v1 = <span class="k">false</span>;
+    <span class="c">// try {  (catch at L001a)</span>
+    <span class="c">// } catch (exc18) {  (try at L0012)</span>
+L001a:
+    gosub L000c;
+    <span class="k">return</span>;
+    gosub L0005;
+    <span class="k">throw</span> ?;
+    <span class="k">return</span>;
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[9] drain(a0..a0) vars=4 stack=4 bc=89B</summary><pre>    r2 = <span class="k">undefined</span>;
+    r1 = <span class="k">undefined</span>;
+    r0 = <span class="k">undefined</span>;
+L000c:
+    <span class="k">if</span> (v0) goto L0015;
+L0015:   <span class="c">// 2 refs</span>
+    <span class="k">if</span> (!v2.length) {
+        <span class="k">return</span>;
+    }
+L0018:
+    v0 = <span class="k">true</span>;
+    r0 = v2.shift();
+    r1 = <span class="k">false</span>;
+    r2 = &lt;fn:finish&gt;;
+    <span class="c">// catch (handler -&gt; L0015)</span>
+    <span class="k">return</span>;
+    r3 = ?;
+    <span class="c">// catch (handler -&gt; L000c)</span>
+    <span class="k">return</span>;
+    <span class="k">throw</span> ?;</pre></details>
+<details><summary>fn[10] valid(a0..a1) vars=0 stack=4 bc=146B</summary><pre>    <span class="k">if</span> (!a0) goto L0087;
+    <span class="k">if</span> (<span class="k">true</span> !== a0.direct) goto L0087;
+    <span class="k">if</span> (a0.request) goto L002a;
+L002a:
+    <span class="k">if</span> (!a0.request.test(<span class="s">&quot;&quot;</span>)) goto L0087;
+    <span class="k">if</span> (<span class="s">&quot;number&quot;</span> != <span class="k">typeof</span> a0.revision) goto L0087;
+    <span class="k">if</span> (!isFinite(a0.revision)) goto L0087;
+    <span class="k">if</span> (a0.revision &lt;= 0) goto L0087;
+    <span class="k">if</span> (a0.revision &gt; 9007199254740991) goto L0087;
+L0087:   <span class="c">// 7 refs</span>
+    <span class="k">if</span> (Math.floor(a0.revision) !== a0.revision) {
+        <span class="k">return</span>;
+    }
+L008e:
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[11] &lt;null&gt;(a0..a0) vars=0 stack=4 bc=11B</summary><pre>    <span class="k">return</span> v0(<span class="s">&quot;reset&quot;</span>, v1, v2);</pre></details>
+<details><summary>fn[12] &lt;null&gt;(a0..a0) vars=0 stack=2 bc=5B</summary><pre>    <span class="k">return</span> v0(<span class="k">false</span>);</pre></details>
+<details><summary>fn[13] &lt;null&gt;(a0..a0) vars=0 stack=4 bc=56B</summary><pre>    <span class="k">return</span>;</pre></details>
+<details><summary>fn[14] &lt;null&gt;(a0..a0) vars=0 stack=2 bc=5B</summary><pre>    <span class="k">return</span> v0(<span class="k">false</span>);</pre></details>
+<details><summary>fn[15] &lt;null&gt;(a0..a0) vars=0 stack=4 bc=69B</summary><pre>    <span class="k">if</span> (!a0) {
+        <span class="k">return</span>;
+    }
+L0009:
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[16] &lt;null&gt;(a0..a0) vars=1 stack=4 bc=222B</summary><pre>    r0 = <span class="k">undefined</span>;
+    <span class="k">if</span> (a0.revision) goto L0014;
+L0014:
+    <span class="k">if</span> (a0.revision &lt; 0) goto L0035;
+    <span class="k">if</span> (v1.revision !== a0.revision) goto L003c;
+L0035:
+    <span class="k">if</span> (a0.request === v1.request) goto L003c;
+    <span class="k">return</span>;
+L003c:   <span class="c">// 2 refs</span>
+    <span class="k">if</span> (<span class="s">&quot;manual-reset&quot;</span> !== a0.phase) goto L0072;
+    <span class="k">if</span> (v1.revision &lt;= a0.revision) goto L006b;
+    <span class="k">if</span> (!(v1.active)) goto L0072;
+L006b:
+    <span class="k">if</span> (<span class="k">true</span> === v1.explicit) goto L0072;
+    <span class="k">return</span>;
+L0072:   <span class="c">// 3 refs</span>
+    <span class="k">if</span> (v1.active) {
+    } <span class="k">else</span> {
+    }
+L0086:
+    r0 = <span class="s">&quot;active&quot;</span>;
+    <span class="k">if</span> (a0.request !== v1.request) goto L00c0;
+    <span class="k">if</span> (a0.phase === r0) goto L00b9;
+    <span class="k">if</span> (!(!v1.active)) goto L00c0;
+L00b9:
+    <span class="k">if</span> (<span class="s">&quot;banned&quot;</span> !== a0.phase) goto L00c0;
+    <span class="k">return</span>;
+L00c0:   <span class="c">// 3 refs</span>
+    <span class="k">if</span> (v1.active) {
+        <span class="k">return</span>;
+    }
+L00d3:
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[17] &lt;null&gt;(a0..a0) vars=0 stack=2 bc=33B</summary><pre>    <span class="k">if</span> (!a0) goto L0013;
+L0013:
+    <span class="k">if</span> (<span class="s">&quot;boolean&quot;</span> != <span class="k">typeof</span> v1.active) {
+        <span class="k">return</span>;
+    }
+L001a:
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[18] &lt;null&gt;(a0..a0) vars=0 stack=3 bc=9B</summary><pre>    <span class="k">return</span> v4(v1, &lt;fn:&lt;<span class="k">null</span>&gt;&gt;);</pre></details>
+<details><summary>fn[19] $k92(a0..a1) vars=0 stack=3 bc=8B</summary><pre>    <span class="k">return</span>;</pre></details>
+<details><summary>fn[20] &lt;null&gt;(a0..a0) vars=0 stack=2 bc=5B</summary><pre>    <span class="k">return</span> v0(<span class="k">true</span>);</pre></details>
+<details><summary>fn[21] &lt;null&gt;(a0..a0) vars=0 stack=2 bc=5B</summary><pre>    <span class="k">return</span> v0(<span class="k">false</span>);</pre></details>
+<details><summary>fn[22] &lt;null&gt;(a0..a0) vars=0 stack=4 bc=56B</summary><pre>    <span class="k">return</span>;</pre></details>
+<details><summary>fn[23] &lt;null&gt;(a0..a0) vars=0 stack=2 bc=5B</summary><pre>    <span class="k">return</span> v0(<span class="k">false</span>);</pre></details>
+<details><summary>fn[24] &lt;null&gt;(a0..a0) vars=0 stack=4 bc=69B</summary><pre>    <span class="k">if</span> (!a0) {
+        <span class="k">return</span>;
+    }
+L0009:
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[25] &lt;null&gt;(a0..a0) vars=0 stack=5 bc=43B</summary><pre>    <span class="k">if</span> (a0.request) goto L0012;
+L0012:
+    a0.request.request = <span class="s">&quot;&quot;</span>;
+    <span class="k">if</span> (a0.revision) goto L0022;
+L0022:
+    a0.revision.revision = 0;
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[26] &lt;null&gt;(a0..a0) vars=0 stack=2 bc=6B</summary><pre>    <span class="k">return</span> v2(&lt;fn:&lt;<span class="k">null</span>&gt;&gt;);</pre></details>
+<details><summary>fn[27] manualReset(a0..a0) vars=0 stack=3 bc=6B</summary><pre>    <span class="k">return</span>;</pre></details>
+<details><summary>fn[28] &lt;null&gt;(a0..a0) vars=0 stack=4 bc=96B</summary><pre>    <span class="k">if</span> (a0.request !== v0.request) goto L003c;
+    <span class="k">if</span> (a0.revision !== v0.revision) goto L003c;
+    <span class="k">if</span> (<span class="s">&quot;reset&quot;</span> === a0.phase) goto L0043;
+L003c:   <span class="c">// 2 refs</span>
+    <span class="k">if</span> (<span class="s">&quot;banned&quot;</span> === a0.phase) goto L0043;
+    <span class="k">return</span>;
+L0043:   <span class="c">// 2 refs</span>
+    <span class="k">if</span> (<span class="s">&quot;banned&quot;</span> === a0.phase) {
+        <span class="k">return</span>;
+    }
+L0056:
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[29] &lt;null&gt;(a0..a0) vars=0 stack=2 bc=14B</summary><pre>    <span class="k">if</span> (!a0) {
+        <span class="k">return</span>;
+    }
+L0009:
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[30] &lt;null&gt;(a0..a0) vars=0 stack=3 bc=7B</summary><pre>    <span class="k">return</span> v3(v0, &lt;fn:&lt;<span class="k">null</span>&gt;&gt;);</pre></details>
+<details><summary>fn[31] notice(a0..a1) vars=0 stack=3 bc=6B</summary><pre>    <span class="k">return</span>;</pre></details>
+<details><summary>fn[32] &lt;null&gt;(a0..a0) vars=13 stack=3 bc=103B</summary><pre>    r1 = &lt;fn:_interopRequireDefault&gt;;
+    r5 = &lt;fn:state&gt;;
+    r6 = &lt;fn:save&gt;;
+    r7 = &lt;fn:enqueue&gt;;
+    r8 = &lt;fn:drain&gt;;
+    r9 = &lt;fn:valid&gt;;
+    r10 = &lt;fn:$k92&gt;;
+    r11 = &lt;fn:manualReset&gt;;
+    r12 = &lt;fn:notice&gt;;
+    r4 = <span class="k">undefined</span>;
+    r3 = <span class="k">undefined</span>;
+    r2 = <span class="k">undefined</span>;
+    r0 = r1(v0(<span class="s">&quot;@app-module/system.storage&quot;</span>));
+    r2 = <span class="s">&quot;phoneOrderActivation&quot;</span>;
+    r3 = <span class="k">false</span>;
+    r4 = [];
+    {state: r5, $k92: r10, notice: r12, manualReset: r11}.exports = a0;
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[33] getVib(a0..a0) vars=1 stack=3 bc=55B</summary><pre>    <span class="k">if</span> (v0) {
+        <span class="k">return</span> v1;
+    }
+L0009:
+    v0 = <span class="k">true</span>;
+    <span class="c">// try {  (catch at L0023)</span>
+    v1 = v2(<span class="s">&quot;@app-module/system.vibrator&quot;</span>);
+    goto L0033;
+    <span class="c">// } catch (exc15) {  (try at L000f)</span>
+L0023:
+    r0 = exc15;
+    <span class="c">// try {  (catch at L0032)</span>
+    v1 = <span class="k">null</span>;
+    goto L0033;
+    <span class="c">// } catch (exc36) {  (try at L0024)</span>
+L0032:
+    <span class="k">throw</span> exc36;
+L0033:   <span class="c">// 2 refs</span>
+    <span class="k">return</span> v1;</pre></details>
+<details><summary>fn[34] &lt;null&gt;(a0..a0) vars=1 stack=5 bc=35B</summary><pre>    <span class="c">// try {  (catch at L0019)</span>
+    <span class="c">// } catch (exc0) {  (try at L0000)</span>
+L0019:
+    <span class="k">return</span>;
+    r0 = exc0;
+    <span class="c">// try {  (catch at L0022)</span>
+    <span class="k">return</span>;
+    <span class="c">// } catch (exc27) {  (try at L001b)</span>
+L0022:
+    <span class="k">throw</span> exc27;</pre></details>
+<details><summary>fn[35] &lt;null&gt;(a0..a0) vars=0 stack=2 bc=11B</summary><pre>    <span class="k">return</span> v0(<span class="s">&quot;short&quot;</span>);</pre></details>
+<details><summary>fn[36] &lt;null&gt;(a0..a0) vars=0 stack=2 bc=11B</summary><pre>    <span class="k">return</span> v0(<span class="s">&quot;short&quot;</span>);</pre></details>
+<details><summary>fn[37] &lt;null&gt;(a0..a0) vars=0 stack=2 bc=11B</summary><pre>    <span class="k">return</span> v0(<span class="s">&quot;short&quot;</span>);</pre></details>
+<details><summary>fn[38] buzz(a0..a0) vars=4 stack=4 bc=131B</summary><pre>    r2 = <span class="k">undefined</span>;
+    r1 = <span class="k">undefined</span>;
+    r0 = <span class="k">undefined</span>;
+    r0 = v0();
+    <span class="k">if</span> (!r0) {
+        <span class="k">return</span>;
+    }
+L0013:
+    <span class="k">if</span> (a0) goto L001d;
+L001d:
+    r1 = <span class="s">&quot;short&quot;</span>;
+    r2 = &lt;fn:fire&gt;;
+    <span class="k">if</span> (<span class="s">&quot;long&quot;</span> === r1) {
+        <span class="k">return</span>;
+    }
+L004b:
+    r3 = <span class="k">undefined</span>;
+    r3 = 0;
+L0050:
+    <span class="k">while</span> (r3 &lt; v2) {
+        <span class="k">if</span> (0 === r3) {
+        } <span class="k">else</span> {
+        }
+    L0078:
+        r3++;
+    }
+L0082:
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[39] &lt;null&gt;(a0..a0) vars=1 stack=5 bc=39B</summary><pre>    <span class="c">// try {  (catch at L001d)</span>
+    <span class="c">// } catch (exc0) {  (try at L0000)</span>
+L001d:
+    <span class="k">return</span>;
+    r0 = exc0;
+    <span class="c">// try {  (catch at L0026)</span>
+    <span class="k">return</span>;
+    <span class="c">// } catch (exc31) {  (try at L001f)</span>
+L0026:
+    <span class="k">throw</span> exc31;</pre></details>
+<details><summary>fn[40] buzzStrong(a0..a1) vars=5 stack=5 bc=121B</summary><pre>    r2 = <span class="k">undefined</span>;
+    r1 = <span class="k">undefined</span>;
+    r0 = <span class="k">undefined</span>;
+    r0 = v0();
+    <span class="k">if</span> (!r0) {
+        <span class="k">return</span>;
+    }
+L0013:
+    <span class="k">if</span> (a0) goto L0019;
+L0019:
+    r1 = 4;
+    <span class="k">if</span> (a1) goto L0022;
+L001e:
+L0022:
+    r2 = v1;
+    r3 = <span class="k">undefined</span>;
+    r3 = 0;
+L0028:
+    <span class="k">while</span> (r3 &lt; r1) {
+        <span class="k">if</span> (0 === r3) {
+            <span class="c">// catch (handler -&gt; L001e)</span>
+            goto L006e;
+            r4 = a0;
+            <span class="c">// try {  (catch at L0061)</span>
+            goto L006e;
+            <span class="c">// } catch (exc89) {  (try at L0059)</span>
+        L0061:
+            <span class="k">throw</span> exc89;
+        }
+    L0062:
+    L006e:   <span class="c">// 2 refs</span>
+        r3++;
+    }
+L0078:
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[41] &lt;null&gt;(a0..a1) vars=7 stack=6 bc=77B</summary><pre>    r2 = &lt;fn:getVib&gt;;
+    r5 = &lt;fn:buzz&gt;;
+    r6 = &lt;fn:buzzStrong&gt;;
+    r4 = <span class="k">undefined</span>;
+    r3 = <span class="k">undefined</span>;
+    r1 = <span class="k">undefined</span>;
+    r0 = <span class="k">undefined</span>;
+    r5.buzz = a1;
+    r6.buzzStrong = a1;
+    r0 = <span class="k">null</span>;
+    r1 = <span class="k">false</span>;
+    r3 = 3;
+    r4 = 110;
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[42] __webpack_require__(a0..a0) vars=2 stack=5 bc=51B</summary><pre>    r0 = v0[a0];
+    <span class="k">if</span> (<span class="k">undefined</span> !== r0) {
+        <span class="k">return</span> r0.exports;
+    }
+L0010:
+    v0[a0] = {exports: {}};
+    r1 = {exports: {}};
+    <span class="k">return</span> r1.exports;</pre></details>
+<details><summary>fn[43] &lt;null&gt;(a0..a0) vars=0 stack=1 bc=6B</summary><pre>    <span class="k">return</span> <span class="s">&quot;1.7.12&quot;</span>;</pre></details>
+<details><summary>fn[44] &lt;null&gt;(a0..a0) vars=0 stack=2 bc=9B</summary><pre>    &lt;fn:&lt;<span class="k">null</span>&gt;&gt;.rv = v0;
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[45] &lt;null&gt;(a0..a0) vars=0 stack=2 bc=12B</summary><pre>    <span class="s">&quot;bundler=rspack@1.7.12&quot;</span>.ruid = v0;
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[46] _interopRequireDefault(a0..a0) vars=0 stack=2 bc=21B</summary><pre>    <span class="k">if</span> (!(a0)) goto L000d;
+    <span class="k">if</span> (!(a0.__esModule)) goto L000d;
+    <span class="k">return</span> a0;
+L000d:   <span class="c">// 2 refs</span>
+    <span class="k">return</span> {default: a0};</pre></details>
+<details><summary>fn[47] &lt;null&gt;(a0..a0) vars=0 stack=3 bc=71B</summary><pre>    <span class="k">if</span> (<span class="s">&quot;banned&quot;</span> === a0) {
+    } <span class="k">else</span> {
+        <span class="k">if</span> (<span class="s">&quot;订单已被封禁，手环已取消激活&quot;</span> === a0) {
+        } <span class="k">else</span> {
+            <span class="k">if</span> (<span class="s">&quot;已手动重置，请在手机重新提交激活&quot;</span> === a0) goto L0033;
+        L0033:
+            <span class="k">if</span> (<span class="s">&quot;revoking&quot;</span> === a0) {
+            } <span class="k">else</span> {
+            }
+        }
+    }
+L0041:   <span class="c">// 3 refs</span>
+    <span class="s">&quot;正在等待手机同步使用状态…&quot;</span>.statusText = <span class="s">&quot;已手动重置，请在手机重新提交激活&quot;</span> === a0;
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[48] &lt;null&gt;(a0..a0) vars=0 stack=3 bc=15B</summary><pre>    <span class="k">return</span> v0._orderStatusListener(a0.phase);</pre></details>
+<details><summary>fn[49] &lt;null&gt;(a0..a0) vars=0 stack=4 bc=30B</summary><pre>    <span class="k">if</span> (a0) {
+    }
+L001d:
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[50] &lt;null&gt;(a0..a0) vars=2 stack=4 bc=125B</summary><pre>    r1 = <span class="k">this</span>;
+    <span class="c">// try {  (catch at L001b)</span>
+L0007:
+    <span class="c">// } catch (exc2) {  (try at L0002)</span>
+L001b:
+    goto L0028;
+    r0 = ?;
+    <span class="c">// catch (handler -&gt; L0007)</span>
+    goto L0028;
+    <span class="k">throw</span> ?;
+L0028:   <span class="c">// 2 refs</span>
+    &lt;fn:&lt;<span class="k">null</span>&gt;&gt;._orderStatusListener = r1;
+    r1._orderStatusListener.orderStatusListener = r1.$app.$def;
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[51] &lt;null&gt;(a0..a0) vars=1 stack=2 bc=45B</summary><pre>    r0 = <span class="k">this</span>;
+    <span class="k">if</span> (r0.$app.$def.orderStatusListener === r0._orderStatusListener) {
+        <span class="k">null</span>.orderStatusListener = r0.$app.$def;
+    }
+L002c:
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[52] &lt;null&gt;(a0..a0) vars=1 stack=2 bc=18B</summary><pre>    r0 = <span class="k">this</span>;
+    <span class="k">true</span>.showQr = r0;
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[53] &lt;null&gt;(a0..a0) vars=1 stack=2 bc=18B</summary><pre>    r0 = <span class="k">this</span>;
+    <span class="k">false</span>.showQr = r0;
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[54] &lt;null&gt;(a0..a0) vars=0 stack=2 bc=23B</summary><pre>    <span class="k">return</span>;</pre></details>
+<details><summary>fn[55] &lt;null&gt;(a0..a0) vars=0 stack=2 bc=6B</summary><pre>    <span class="k">return</span> v0[a0];</pre></details>
+<details><summary>fn[56] &lt;null&gt;(a0..a0) vars=2 stack=6 bc=132B</summary><pre>    r0 = <span class="k">undefined</span>;
+    r0 = <span class="k">typeof</span> v0[a0];
+    <span class="k">if</span> (<span class="s">&quot;$k75&quot;</span> === r0) {
+        Object.assign(v0.data, v0[a0]).data = v0;
+        r1 = <span class="k">undefined</span>;
+        goto L0057;
+    L0042:
+        r1 = ?;
+        v0._descriptor[r1] = {access: a0};
+    L0057:
+        <span class="k">if</span> (!(__iter(v0[a0]).done)) goto L0042;
+        <span class="k">return</span>;
+    }
+L005d:
+    <span class="k">if</span> (<span class="s">&quot;object&quot;</span> === r0) {
+    }
+L0083:
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[57] __scriptModule__(a0..a2) vars=8 stack=6 bc=302B</summary><pre>    r4 = &lt;fn:_interopRequireDefault&gt;;
+    r7 = <span class="k">undefined</span>;
+    r6 = <span class="k">undefined</span>;
+    <span class="k">undefined</span>.default = a1;
+    r0 = r4(a2(<span class="s">&quot;@app-module/system.router&quot;</span>));
+    r1 = r4(a2(<span class="s">&quot;@app-module/system.app&quot;</span>));
+    r2 = r4(v0(<span class="s">&quot;./src/Common/order-activation.js&quot;</span>));
+    r3 = v0(<span class="s">&quot;./src/Common/ui.js&quot;</span>);
+    {data: {statusText: <span class="s">&quot;等待手机发送激活指令&quot;</span>, showQr: <span class="k">false</span>}}.onShow = &lt;fn:&lt;<span class="k">null</span>&gt;&gt;;
+    {data: {statusText: <span class="s">&quot;等待手机发送激活指令&quot;</span>, showQr: <span class="k">false</span>}}.onHide = &lt;fn:&lt;<span class="k">null</span>&gt;&gt;;
+    {data: {statusText: <span class="s">&quot;等待手机发送激活指令&quot;</span>, showQr: <span class="k">false</span>}}.openQr = &lt;fn:&lt;<span class="k">null</span>&gt;&gt;;
+    {data: {statusText: <span class="s">&quot;等待手机发送激活指令&quot;</span>, showQr: <span class="k">false</span>}}.closeQr = &lt;fn:&lt;<span class="k">null</span>&gt;&gt;;
+    {data: {statusText: <span class="s">&quot;等待手机发送激活指令&quot;</span>, showQr: <span class="k">false</span>}}.exitApp = &lt;fn:&lt;<span class="k">null</span>&gt;&gt;;
+    a1.default = {data: {statusText: <span class="s">&quot;等待手机发送激活指令&quot;</span>, showQr: <span class="k">false</span>}};
+    r5 = a1;
+    <span class="k">if</span> (a1.default) goto L00ad;
+L00ad:
+    r6 = a0.exports;
+    r7 = [<span class="s">&quot;$k45&quot;</span>, <span class="s">&quot;$k44&quot;</span>, <span class="s">&quot;$k43&quot;</span>];
+    <span class="k">if</span> (!(r6.data)) goto L0102;
+    <span class="k">if</span> (!(r7.some(&lt;fn:&lt;<span class="k">null</span>&gt;&gt;))) goto L0102;
+    <span class="k">throw</span> <span class="k">new</span> Error((<span class="s">&quot;页面VM对象中的属性data不可与\&quot;&quot;</span> + r7.$k93(<span class="s">&quot;,&quot;</span>)) + <span class="s">&quot;\&quot;同时存在，请使用private替换data名称&quot;</span>);
+L0102:   <span class="c">// 2 refs</span>
+    <span class="k">if</span> (!r6.data) {
+        {}.data = r6;
+        {}._descriptor = r6;
+    }
+L012d:
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[58] &lt;null&gt;(a0..a0) vars=0 stack=3 bc=12B</summary><pre>    <span class="k">return</span> v0.exitApp(a0);</pre></details>
+<details><summary>fn[59] &lt;null&gt;(a0..a0) vars=0 stack=3 bc=12B</summary><pre>    <span class="k">return</span> v0.openQr(a0);</pre></details>
+<details><summary>fn[60] &lt;null&gt;(a0..a0) vars=0 stack=1 bc=9B</summary><pre>    <span class="k">return</span> v0.statusText;</pre></details>
+<details><summary>fn[61] &lt;null&gt;(a0..a0) vars=0 stack=1 bc=9B</summary><pre>    <span class="k">return</span> v0.showQr;</pre></details>
+<details><summary>fn[62] &lt;null&gt;(a0..a0) vars=0 stack=3 bc=12B</summary><pre>    <span class="k">return</span> v0.closeQr(a0);</pre></details>
+<details><summary>fn[63] &lt;null&gt;(a0..a0) vars=0 stack=21 bc=405B</summary><pre>    <span class="k">return</span> [aiot.__ce__(<span class="s">&quot;div&quot;</span>, {__vm__: v0, __opts__: {classList: [<span class="s">&quot;overlay&quot;</span>]}}, [aiot.__ce__(<span class="s">&quot;div&quot;</span>, {__vm__: v0, __opts__: {classList: [<span class="s">&quot;qr-box&quot;</span>]}}, [aiot.__ce__(<span class="s">&quot;text&quot;</span>, {__vm__: v0, __opts__: {classList: [<span class="s">&quot;qr-title&quot;</span>], state: <span class="s">&quot;下载手机安装包&quot;</span>}}, []), aiot.__ce__(<span class="s">&quot;image&quot;</span>, {__vm__: v0, __opts__: {classList: [<span class="s">&quot;qr-img&quot;</span>], src: <span class="s">&quot;/Common/afdian-download.png&quot;</span>}}, []), aiot.__ce__(<span class="s">&quot;text&quot;</span>, {__vm__: v0, __opts__: {classList: [<span class="s">&quot;qr-hint&quot;</span>], state: <span class="s">&quot;用手机扫码下载 APK&quot;</span>}}, []), aiot.__ce__(<span class="s">&quot;div&quot;</span>, {__vm__: v0, __opts__: {classList: [<span class="s">&quot;qr-close&quot;</span>], events: {click: &lt;fn:click&gt;}}}, [aiot.__ce__(<span class="s">&quot;text&quot;</span>, {__vm__: v0, __opts__: {classList: [<span class="s">&quot;qr-close-t&quot;</span>], state: <span class="s">&quot;关闭&quot;</span>}}, [])])])])];</pre></details>
+<details><summary>fn[64] &lt;null&gt;(a0..a0) vars=2 stack=19 bc=809B</summary><pre>    r1 = <span class="k">this</span>;
+    r0 = <span class="k">undefined</span>;
+    <span class="k">if</span> (a0) goto L000b;
+L000b:
+    r0 = r1;
+    <span class="k">return</span> aiot.__ce__(<span class="s">&quot;div&quot;</span>, {__vm__: r0, __opts__: {classList: [<span class="s">&quot;page&quot;</span>]}}, [aiot.__ce__(<span class="s">&quot;div&quot;</span>, {__vm__: r0, __opts__: {classList: [<span class="s">&quot;topbar&quot;</span>]}}, [aiot.__ce__(<span class="s">&quot;text&quot;</span>, {__vm__: r0, __opts__: {classList: [<span class="s">&quot;title-l&quot;</span>], state: <span class="s">&quot;离线地图·激活&quot;</span>}}, []), aiot.__ce__(<span class="s">&quot;div&quot;</span>, {__vm__: r0, __opts__: {classList: [<span class="s">&quot;exit-btn&quot;</span>], events: {click: &lt;fn:click&gt;}}}, [aiot.__ce__(<span class="s">&quot;text&quot;</span>, {__vm__: r0, __opts__: {classList: [<span class="s">&quot;exit-ic&quot;</span>], state: <span class="s">&quot;×&quot;</span>}}, [])])]), aiot.__ce__(<span class="s">&quot;div&quot;</span>, {__vm__: r0, __opts__: {classList: [<span class="s">&quot;code-box&quot;</span>]}}, [aiot.__ce__(<span class="s">&quot;text&quot;</span>, {__vm__: r0, __opts__: {classList: [<span class="s">&quot;code-label&quot;</span>], state: <span class="s">&quot;手机直接激活&quot;</span>}}, []), aiot.__ce__(<span class="s">&quot;text&quot;</span>, {__vm__: r0, __opts__: {classList: [<span class="s">&quot;code-value&quot;</span>], state: <span class="s">&quot;无需设备码&quot;</span>}}, [])]), aiot.__ce__(<span class="s">&quot;text&quot;</span>, {__vm__: r0, __opts__: {classList: [<span class="s">&quot;instruction&quot;</span>], state: <span class="s">&quot;请在手机 App 中输入爱发电订单号完成激活&quot;</span>}}, []), aiot.__ce__(<span class="s">&quot;text&quot;</span>, {__vm__: r0, __opts__: {classList: [<span class="s">&quot;hint&quot;</span>], state: <span class="s">&quot;手机和手环保持连接，激活后会自动同步到手环。&quot;</span>}}, []), aiot.__ce__(<span class="s">&quot;div&quot;</span>, {__vm__: r0, __opts__: {classList: [<span class="s">&quot;download-btn&quot;</span>], events: {click: &lt;fn:click&gt;}}}, [aiot.__ce__(<span class="s">&quot;text&quot;</span>, {__vm__: r0, __opts__: {classList: [<span class="s">&quot;download-btn-t&quot;</span>], state: <span class="s">&quot;扫码下载手机安装包&quot;</span>}}, [])]), aiot.__ce__(<span class="s">&quot;text&quot;</span>, {__vm__: r0, __opts__: {classList: [<span class="s">&quot;$k138&quot;</span>], state: &lt;fn:state&gt;}}, []), aiot.__ci__({__vm__: r0, __opts__: {shown: &lt;fn:shown&gt;}}, &lt;fn:&lt;<span class="k">null</span>&gt;&gt;)]);</pre></details>
+<details><summary>fn[65] &lt;null&gt;(a0..a0) vars=0 stack=4 bc=31B</summary><pre>    v2.template = a0.default;
+    v3.style = a0.default;
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[66] &lt;null&gt;(a0..a0) vars=3 stack=22 bc=1366B</summary><pre>    r0 = [[[[0, <span class="s">&quot;page&quot;</span>]], {width: <span class="s">&quot;100%&quot;</span>, height: <span class="s">&quot;100%&quot;</span>, flexDirection: <span class="s">&quot;column&quot;</span>, backgroundColor: <span class="s">&quot;#080d11&quot;</span>, paddingTop: <span class="s">&quot;10px&quot;</span>, paddingRight: <span class="s">&quot;10px&quot;</span>, paddingBottom: <span class="s">&quot;10px&quot;</span>, paddingLeft: <span class="s">&quot;10px&quot;</span>}], [[[0, <span class="s">&quot;topbar&quot;</span>]], {flexDirection: <span class="s">&quot;row&quot;</span>, alignItems: <span class="s">&quot;center&quot;</span>, height: <span class="s">&quot;52px&quot;</span>, marginTop: <span class="s">&quot;2px&quot;</span>}], [[[0, <span class="s">&quot;title-l&quot;</span>]], {color: <span class="s">&quot;#ffffff&quot;</span>, fontSize: <span class="s">&quot;22px&quot;</span>, fontWeight: <span class="s">&quot;bold&quot;</span>, flex: 1, textAlign: <span class="s">&quot;left&quot;</span>}], [[[0, <span class="s">&quot;exit-btn&quot;</span>]], {width: <span class="s">&quot;52px&quot;</span>, height: <span class="s">&quot;52px&quot;</span>, backgroundColor: <span class="s">&quot;#172126&quot;</span>, borderRadius: <span class="s">&quot;26px&quot;</span>, justifyContent: <span class="s">&quot;center&quot;</span>, alignItems: <span class="s">&quot;center&quot;</span>}], [[[0, <span class="s">&quot;exit-ic&quot;</span>]], {color: <span class="s">&quot;#ffffff&quot;</span>, fontSize: <span class="s">&quot;30px&quot;</span>, fontWeight: <span class="s">&quot;bold&quot;</span>}], [[[0, <span class="s">&quot;code-box&quot;</span>]], {backgroundColor: <span class="s">&quot;#172126&quot;</span>, borderRadius: <span class="s">&quot;18px&quot;</span>, paddingTop: <span class="s">&quot;12px&quot;</span>, paddingRight: <span class="s">&quot;12px&quot;</span>, paddingBottom: <span class="s">&quot;12px&quot;</span>, paddingLeft: <span class="s">&quot;12px&quot;</span>, marginTop: <span class="s">&quot;12px&quot;</span>, flexDirection: <span class="s">&quot;column&quot;</span>, alignItems: <span class="s">&quot;center&quot;</span>}], [[[0, <span class="s">&quot;code-label&quot;</span>]], {color: <span class="s">&quot;#a7b8bf&quot;</span>, fontSize: <span class="s">&quot;16px&quot;</span>}], [[[0, <span class="s">&quot;code-value&quot;</span>]], {color: <span class="s">&quot;#2dd4bf&quot;</span>, fontSize: <span class="s">&quot;24px&quot;</span>, letterSpacing: <span class="s">&quot;2px&quot;</span>, marginTop: <span class="s">&quot;6px&quot;</span>}], [[[0, <span class="s">&quot;instruction&quot;</span>]], {color: <span class="s">&quot;#ffffff&quot;</span>, fontSize: <span class="s">&quot;19px&quot;</span>, textAlign: <span class="s">&quot;center&quot;</span>, marginTop: <span class="s">&quot;24px&quot;</span>, lineHeight: <span class="s">&quot;27px&quot;</span>}], [[[0, <span class="s">&quot;hint&quot;</span>]], {color: <span class="s">&quot;#a7b8bf&quot;</span>, fontSize: <span class="s">&quot;15px&quot;</span>, textAlign: <span class="s">&quot;center&quot;</span>, marginTop: <span class="s">&quot;12px&quot;</span>, lineHeight: <span class="s">&quot;21px&quot;</span>}], [[[0, <span class="s">&quot;download-btn&quot;</span>]], {width: <span class="s">&quot;272px&quot;</span>, height: <span class="s">&quot;50px&quot;</span>, backgroundColor: <span class="s">&quot;#087f75&quot;</span>, borderRadius: <span class="s">&quot;24px&quot;</span>, justifyContent: <span class="s">&quot;center&quot;</span>, alignItems: <span class="s">&quot;center&quot;</span>, marginTop: <span class="s">&quot;25px&quot;</span>, alignSelf: <span class="s">&quot;center&quot;</span>}], [[[0, <span class="s">&quot;download-btn-t&quot;</span>]], {color: <span class="s">&quot;#ffffff&quot;</span>, fontSize: <span class="s">&quot;17px&quot;</span>, fontWeight: <span class="s">&quot;bold&quot;</span>}], [[[0, <span class="s">&quot;$k138&quot;</span>]], {color: <span class="s">&quot;#a7b8bf&quot;</span>, fontSize: <span class="s">&quot;14px&quot;</span>, textAlign: <span class="s">&quot;center&quot;</span>, marginTop: <span class="s">&quot;14px&quot;</span>}], [[[0, <span class="s">&quot;overlay&quot;</span>]], {position: <span class="s">&quot;absolute&quot;</span>, left: 0, top: 0, right: 0, bottom: 0, backgroundColor: <span class="s">&quot;rgba(0, 0, 0, 0.84)&quot;</span>, justifyContent: <span class="s">&quot;center&quot;</span>, alignItems: <span class="s">&quot;center&quot;</span>}], [[[0, <span class="s">&quot;qr-box&quot;</span>]], {width: <span class="s">&quot;300px&quot;</span>, backgroundColor: <span class="s">&quot;#172126&quot;</span>, borderRadius: <span class="s">&quot;24px&quot;</span>, paddingTop: <span class="s">&quot;14px&quot;</span>, paddingRight: <span class="s">&quot;14px&quot;</span>, paddingBottom: <span class="s">&quot;14px&quot;</span>, paddingLeft: <span class="s">&quot;14px&quot;</span>, alignItems: <span class="s">&quot;center&quot;</span>, flexDirection: <span class="s">&quot;column&quot;</span>}], [[[0, <span class="s">&quot;qr-title&quot;</span>]], {color: <span class="s">&quot;#ffffff&quot;</span>, fontSize: <span class="s">&quot;20px&quot;</span>, fontWeight: <span class="s">&quot;bold&quot;</span>, textAlign: <span class="s">&quot;center&quot;</span>, marginBottom: <span class="s">&quot;10px&quot;</span>}], [[[0, <span class="s">&quot;qr-img&quot;</span>]], {width: <span class="s">&quot;216px&quot;</span>, height: <span class="s">&quot;216px&quot;</span>}], [[[0, <span class="s">&quot;qr-hint&quot;</span>]], {color: <span class="s">&quot;#a7b8bf&quot;</span>, fontSize: <span class="s">&quot;15px&quot;</span>, textAlign: <span class="s">&quot;center&quot;</span>, marginTop: <span class="s">&quot;8px&quot;</span>}], [[[0, <span class="s">&quot;qr-close&quot;</span>]], {width: <span class="s">&quot;180px&quot;</span>, height: <span class="s">&quot;48px&quot;</span>, backgroundColor: <span class="s">&quot;#087f75&quot;</span>, borderRadius: <span class="s">&quot;24px&quot;</span>, justifyContent: <span class="s">&quot;center&quot;</span>, alignItems: <span class="s">&quot;center&quot;</span>, marginTop: <span class="s">&quot;12px&quot;</span>}], [[[0, <span class="s">&quot;qr-close-t&quot;</span>]], {color: <span class="s">&quot;#ffffff&quot;</span>, fontSize: <span class="s">&quot;19px&quot;</span>, fontWeight: <span class="s">&quot;bold&quot;</span>}]];
+    r1 = &lt;fn:__scriptModule__&gt;;
+    r2 = &lt;fn:$app_template$&gt;;
+    v2[<span class="s">&quot;entry&quot;</span>] = &lt;fn:&lt;<span class="k">null</span>&gt;&gt;;
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[67] &lt;null&gt;(a0..a0) vars=4 stack=2 bc=37B</summary><pre>    r2 = &lt;fn:__webpack_require__&gt;;
+    {}../src/Common/order-activation.js = &lt;fn:&lt;<span class="k">null</span>&gt;&gt;;
+    {}../src/Common/ui.js = &lt;fn:&lt;<span class="k">null</span>&gt;&gt;;
+    r0 = {};
+    r1 = {};
+    r3 = {};
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[68] &lt;null&gt;(a0..a0) vars=0 stack=1 bc=5B</summary><pre>    <span class="k">return</span> &lt;fn:&lt;<span class="k">null</span>&gt;&gt;();</pre></details>
+<details><summary>fn[69] &lt;null&gt;(a0..a4) vars=6 stack=2 bc=53B</summary><pre>    r0 = a0.setTimeout;
+    r1 = a0.setInterval;
+    r2 = a0.clearTimeout;
+    r3 = a0.clearInterval;
+    <span class="k">if</span> (a0.$app_require$) goto L0027;
+L0027:
+    r4 = v0;
+    r5 = &lt;fn:createPageHandler&gt;;
+    <span class="k">return</span> &lt;fn:createPageHandler&gt;();</pre></details>
+<details><summary>fn[70] &lt;null&gt;(a0..a4) vars=1 stack=6 bc=19B</summary><pre>    r0 = $app_require$;
+    <span class="k">return</span>;</pre></details>
+<details><summary>fn[71] $k82(a0..a0) vars=0 stack=1 bc=13B</summary><pre>    <span class="k">if</span> (<span class="k">this</span>) {
+        v0 = &lt;fn:default&gt;;
+        <span class="k">return</span>;
+    }
+L000c:
+    <span class="k">return</span>;</pre></details>
+</section>
+<script>
+const q=document.getElementById('q');
+q.addEventListener('input',()=>{const v=q.value.toLowerCase();
+document.querySelectorAll('details').forEach(d=>{const t=d.querySelector('summary').textContent.toLowerCase();
+d.style.display=(!v||t.includes(v))?'':'none';});});
+</script></body></html>

@@ -1,0 +1,21 @@
+target      : /tmp/rpk/map.rpk (rpk)
+package     : com.zhongshan.offlinemap  "离线地图"
+version     : 1.0.226 (226)   minPlatform=None   deviceType=['watch']
+toolkit     : 2.0.5
+features    : system.app, system.brightness, system.device, system.file, system.geolocation, system.interconnect, system.prompt, system.router, system.sensor, system.storage, system.vibrator
+pages       : ['pages/index', 'pages/mapview', 'pages/settings', 'pages/auth', 'pages/dnav', 'pages/trace', 'pages/demo', 'pages/marks', 'pages/sync']
+opcode table: 2020-11-08   [auto-selected 2020-11-08 (penalty: 2019-07-09=5985, 2019-12-21=7932, 2020-01-19=7932, 2020-07-05=2125, 2020-11-08=0, 2021-03-27=0)]
+
+file                          atoms  funcs     insns  exact anomalies
+app.jsc                        2087    663     41827    yes 410
+pages/auth/auth.jsc             219     72      2011    yes 37
+pages/demo/demo.jsc             512    150      6123    yes 97
+pages/dnav/dnav.jsc             601    158      9066    yes 51
+pages/index/index.jsc          3538    123     17727    yes 58
+pages/mapview/mapview.jsc      4393    444     28998    yes 195
+pages/marks/marks.jsc           240     63      2165    yes 19
+pages/settings/settings.jsc     283    120      3856    yes 47
+pages/sync/sync.jsc             338     95      3309    yes 31
+pages/trace/trace.jsc           744    320     14360    yes 176
+
+10 file(s), 12955 atoms, 2208 functions, 129442 instructions, structural penalties=0, renderer anomalies=1121, trailing bytes=0

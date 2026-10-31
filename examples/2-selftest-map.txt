@@ -1,0 +1,4 @@
+version: veladec 1.0.0
+2020-11-08   funcs=2208   insns=129442  penalty=0      not_exact=0    unknown=0     badjump=0     badatom=0    badpool=0    badslot=0
+
+selftest: OK
