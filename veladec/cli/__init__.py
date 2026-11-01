@@ -11,6 +11,7 @@ from .commands import (cmd_info, cmd_ls, cmd_search, cmd_selftest, cmd_strings,
                        cmd_tables, cmd_unpack)
 from .decompile_cmd import cmd_decompile, cmd_disasm
 from .mv_cmd import cmd_mv
+from .run_cmd import cmd_run
 from .options import Opts
 
 
@@ -84,6 +85,50 @@ def build_parser():
                    help='max name-index rows per file (default %(default)s)')
     s.add_argument('--stdout', action='store_true', help='force stdout even with -o')
     s.set_defaults(func=cmd_mv)
+
+    run = sub.add_parser('run', help='dynamic analysis: execute a function',
+                         parents=[common],
+                         description='Execute one bytecode function against stubbed '
+                                     'platform APIs and report value, calls, watches.')
+    run.add_argument('target')
+    run.add_argument('--file', help='only files whose name contains this')
+    run.add_argument('--fn', type=int, help='function index to run')
+    run.add_argument('--method', help='run the function bound to this method name')
+    run.add_argument('--args', help='JSON array of arguments, e.g. ["ABC"]')
+    run.add_argument('--this', help='JSON value to use as `this`')
+    run.add_argument('--null-this', action='store_true', help='pass null as this')
+    run.add_argument('--global', dest='global_', action='append', metavar='NAME=JSON',
+                     help='define a global (repeatable)')
+    run.add_argument('--storage', action='append', metavar='KEY=VALUE',
+                     help='seed storage (repeatable)')
+    run.add_argument('--device-id', default='VELADEC-DEVICE-0001')
+    run.add_argument('--now', type=int, default=1700000000000, help='Date.now() value')
+    run.add_argument('--seed', type=int, default=0x2F6E2B1, help='Math.random seed')
+    run.add_argument('--max-steps', type=int, default=5000000)
+    run.add_argument('--trace', action='store_true', help='per-instruction trace')
+    run.add_argument('--trace-calls', action='store_true', help='log every call')
+    run.add_argument('--watch', action='append', metavar='NAME',
+                     help='log reads/writes of a property (repeatable)')
+    run.add_argument('--watch-call', type=int, action='append', metavar='FN',
+                     help='log calls to fn[N] with args and result (repeatable)')
+    run.add_argument('--stop-at', metavar='HEX[:N]',
+                     help='breakpoint offset; :N breaks on the Nth hit')
+    run.add_argument('--snap', action='append', metavar='HEX[:N]',
+                     help='record locals at an offset without stopping (repeatable)')
+    run.add_argument('--then', action='append', metavar='FN[:ARGS]',
+                     help='call a closure the entry created, e.g. --then 23:["B82TTQG0"] '
+                          '(repeatable, runs in order)')
+    run.add_argument('--then-args', metavar='JSON', help='arguments for --then')
+    run.add_argument('--then-this', metavar='JSON', help='this for --then')
+    run.add_argument('--fill', choices=['undefined', 'require', 'noop'],
+                     default='undefined',
+                     help='value for arguments the caller did not supply '
+                          '(module factories need require)')
+    run.add_argument('--atom', action='append', metavar='ID=NAME',
+                     help='force a builtin atom name (repeatable), e.g. --atom 103=assign')
+    run.add_argument('--dump', action='store_true', help='dump frame at break/end')
+    run.add_argument('--json', action='store_true', help='machine-readable output')
+    run.set_defaults(func=cmd_run)
 
     s = sub.add_parser('disasm', help='faithful instruction listing', parents=[common])
     s.add_argument('target')

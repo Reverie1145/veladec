@@ -1,4 +1,4 @@
-# veladec 1.2.0
+# veladec 1.3.0
 
 快应用（Vela / 小米手环）`.rpk` → **`.jsc` QuickJS 字节码反编译器**。
 零依赖、单文件可分发，一条命令把打包好的字节码还原成可读的伪 JS（保留 `goto`，能安全结构化的地方自动结构化成 `if/else`）。
@@ -91,6 +91,7 @@ ln -s "$PWD/veladec.pyz" ~/.local/bin/veladec && veladec info app.rpk
 | `mv <target>` | **模块/视图地图**：入口、导出方法、字面量字段、闭包绑定、名字索引 | `--file`, `--fn N`, `--grep PAT`, `--names N`, `--format text\|json\|md`, `-o DIR` |
 | `decompile <target>` | 反编译成伪 JS | `-o DIR`, `--format js\|json\|md\|html`, `--file`, `--fn N`, `--stdout`, `--single`, `--title`, `--no-structure`, `--no-labels`, `--offsets` |
 | `disasm <target>` | 反汇编（忠实清单） | `-o DIR`, `--file`, `--fn N`, `--name`, `--stdout` |
+| `run <target>` | **动态执行**：真跑一个函数，喂输入、读返回值、看平台调用 | `--fn N`, `--method NAME`, `--args JSON`, `--this JSON`, `--then FN[:ARGS]`, `--fill`, `--storage K=V`, `--device-id`, `--watch NAME`, `--watch-call FN`, `--trace`, `--snap FN@HEX[:N]`, `--atom ID=NAME`, `--json` |
 | `selftest <target>` | 结构自检 | `--all-tables`（把 6 张表都跑一遍并对比） |
 | `tables` | 打印内置 opcode 表/版本信息 | |
 
@@ -135,6 +136,36 @@ fn[  0] ?                      a1  v0  cl0  cp0       7i  calls: parse
   于是 `v3 <- fn[80].r4 (salt)` 这种"到底抓了谁"的答案直接印出来，不用再手动对 `fclosure8` 与 `put_loc8`。
 - **名字索引**：`get_field` / `put_field` / `get_field2;call_method` 落到 `fn` 粒度，`--grep` 直接过滤——找"谁写了 `devCode`"就是一行。
 - **`--fn N`**：单函数详情 = 变量名表 + 闭包表（含 `flags` 逐位含义与解析结果）+ `cpool` 逐项（函数项直接标 `fn[k]`）+ 读写/调用/创建关系 + `made by`。
+
+### 5.2 `run`：跑一遍，比读十遍准
+
+静态分析回答"它大概在算什么"，`run` 回答"它到底算出了什么"。它是一台 QuickJS 字节码解释器 + 一套平台 API 桩，不需要设备、不需要改包。
+
+```
+# 真跑 sha256，跟 hashlib 对账
+veladec run TARGET --file pages/index --fn 80 --args '[{},{}]' --fill require \
+        --then '7:["abc"]'
+# result: 'ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad'
+
+# 跑页面 onInit，把设备号喂进去，盯着关键变量
+veladec run TARGET --file pages/index --fn 80 --args '[{},{}]' --fill require \
+        --device-id B82TTQG0 --then 21 --watch devCode --watch expected
+# watch put devCode   <- 'NDAB6NYG'      (fn[25]:0x0018)
+# watch put expected  <- '841058703076'  (fn[25]:0x0053)
+
+# 页面方法：--this 直接把页面 data 摆上去
+veladec run TARGET --file pages/lock --fn 32 \
+        --this '{"serial":"600192","z":"zyxw1","g":"z","h":"y","i":"x","j":"w"}'
+# result: 4113216.0
+```
+
+要点：
+
+- **`--fill require`**：模块工厂是 `(module, exports, require)`，缺的参数用真 `require` 补；`@app-module/system.*` 会自动接到宿主桩上，回调因此才会触发。
+- **`--then FN[:ARGS]`**：入口跑完后，在它创建的闭包里找到 `fn[N]` 并调用，页面方法还会自动把所属对象字面量当 `this`。
+- **`--watch NAME`** 盯 `put_loc` 写入，**`--watch-call FN`** 盯调用，**`--trace`** 全量指令流，**`--snap FN@HEX:N`** 在第 N 次经过某偏移时记一份局部变量快照（不中断）。
+- **`--atom ID=NAME`**：内建 atom id 在不同 Vela 构建里会整体移位，运行时会按"接收者能不能实现这个方法"自动裁决并缓存；裁决错了就手动钉。
+- 返回值同样可以 `--json` 拿，便于脚本化对账。
 
 ## 6. 它怎么工作的
 
@@ -242,6 +273,7 @@ veladec/                    # 源码包
   ins.py                    # opcode 表 / 解码 / 跳转解析 / 校验
   builtins.py               # 内置 atom 名表
   rpk.py                    # rpk / 目录 / 单文件目标解析
+  rt/                       # 动态执行：values / host / interp / atoms
 veladec.py                  # 入口
 veladec.pyz                 # 单文件可执行（无需安装）
 examples/                   # 两个真实样本的输出片段
@@ -250,6 +282,9 @@ tools/                      # 表生成与标定脚本
 
 ## 11. 版本
 
+- **1.3.0** — 新增 `run` 子命令（动态执行）：QuickJS 字节码解释器 `veladec/rt/`（`values` / `host` / `interp` / `atoms`）+ 平台 API 桩（`storage` / `device` / `router` / `vibrator` / `showToast` / `Date` / `Math` / `JSON` / `RegExp`），支持 `--args` / `--this` / `--then` / `--fill` / `--watch` / `--watch-call` / `--trace` / `--snap` / `--stop-at` / `--atom` / `--json`。附带 `skills/vela-reverse/SKILL.md` 与两份提示词（一键逆向、skill 安装）。
+  修掉的两个真实 bug：**tagged-int atom**（`0x80000000+n` 是整型属性名 `"n"`，此前被当成 `$kNN` 内置名，导致 64 项常量表只装上 32 项）与**字符串下标**（`"abc"[1]` 走了方法表，返回 `undefined`）。
+  实测对账：两个样本 `selftest: OK`；`sha256('abc')` 与 hashlib 逐字节相同；函数求解器 `devCode/expected` 与 hashlib 独立复算一致；羊了个羊 `decrypt(600192) = 4113216`。
 - **1.2.0** — 新增 `mv` 子命令（模块/视图地图）：入口与导出方法、对象字面量的字段/方法归类、**闭包变量的逐层绑定解析**、字段与方法的 `fn` 级名字索引（`--grep`）、单函数详情（`vars` / `closures` / `cpool` / `writes` / `reads` / `calls` / `makes` / `made by`），输出 `text|json|md`。反编译与反汇编输出不变。
 - **1.1.0** — 纯结构整理，**功能与输出完全不变**（对地图样本逐字节比对过 13 条命令的输出）：`cli.py` / `decomp.py` / `tables.py` 三个大文件拆成包，最大模块从 2877 行降到 496 行；`tables/` 一版一模块，`tools/gen_tables.py` 改为生成该包并支持增量合并；新增 `LICENSE`。
 - **1.0.0** — 首个可分发版本：rpk 解包 / 反编译 / 反汇编 / 搜索 / 自检 / 四种格式；三处 Vela 差异处理；6 张 opcode 表 + 自动选表；优先级括号、对象/数组字面量、`for...in`、`while` 循环恢复、`catch` 处理块、隐式尾 `return`、方法调用接收者括号化，以及 `veladec.pyz` 单文件分发。
