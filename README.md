@@ -88,6 +88,7 @@ ln -s "$PWD/veladec.pyz" ~/.local/bin/veladec && veladec info app.rpk
 | `ls <target>` | 列出包内文件与大小 | `--file`, `--grep PAT` |
 | `strings <target>` | 导出 atom 表 / 常量池字符串 | `--grep PAT`, `--file`, `--min N` |
 | `search <target> PAT` | 在字节码引用位置搜索字符串 | `--regex` |
+| `mv <target>` | **模块/视图地图**：入口、导出方法、字面量字段、闭包绑定、名字索引 | `--file`, `--fn N`, `--grep PAT`, `--names N`, `--format text\|json\|md`, `-o DIR` |
 | `decompile <target>` | 反编译成伪 JS | `-o DIR`, `--format js\|json\|md\|html`, `--file`, `--fn N`, `--stdout`, `--single`, `--title`, `--no-structure`, `--no-labels`, `--offsets` |
 | `disasm <target>` | 反汇编（忠实清单） | `-o DIR`, `--file`, `--fn N`, `--name`, `--stdout` |
 | `selftest <target>` | 结构自检 | `--all-tables`（把 6 张表都跑一遍并对比） |
@@ -101,6 +102,39 @@ ln -s "$PWD/veladec.pyz" ~/.local/bin/veladec && veladec info app.rpk
 - **`asm`**：一行一条指令，列 = 偏移 / 助记符 / 操作数 / 注释（atom 名、跳转目标、cpool 常量）。末尾 `; exact=True len=NNN` 表示解码长度与函数头声明一致。
 - **`json`**：`{files:[{name, atoms, functions:[{index,name,args,vars,stack,sig,lines,anoms}]}]}`，`anoms` 是渲染异常标记（如 `implicit-return`），便于批量筛查。
 - **`html`**：单文件、离线、深色主题；顶部搜索框按函数名过滤，函数可折叠。
+
+### 5.1 `mv`：先看地图，再读代码
+
+反编译解决"这条指令什么意思"，**`mv` 解决"我该看哪个 `fn`"**。三个问题一次回答：入口导出了什么、页面/组件对象在哪、闭包变量到底绑到谁的槽位。
+
+```
+$ veladec mv app.rpk --file pages/index --grep dev
+
+# pages/index/index.jsc   190 fns / 8750 insns
+module   @aiot/index
+exports  default
+entry    fn[189] $k82 a0  v0  cl1  cp1       7i
+view literal: fn[131] (15 fields, 11 methods)
+  methods:
+    classList                  fn[90]
+    click                      fn[91]
+  fields:
+    __vm__                     = <?>
+    state                      = null
+name index   (w = 字段被写, r = 被读 / 被调用)
+  devCode             w:fn[25],fn[80]
+  devCodeText         w:fn[25],fn[80]  r:fn[169]
+
+id       name                   arg var clos cpool size   xref
+fn[  0] ?                      a1  v0  cl0  cp0       7i  calls: parse
+```
+
+- **entry / exports / methods**：模块入口那一个字面量里，`define_field` + `fclosure` 的字段是方法（直接给 `fn[N]`），常量字段是 `data` 初值。
+- **闭包绑定**：按 `js_closure()` 的规则解析到底——
+  `is_local` → 父函数变量槽 `r<n>`；`is_arg` → 父函数参数 `a<n>`；两者都没置 → 父函数闭包数组的第 `var_idx` 项，逐层上溯到最外层为止。
+  于是 `v3 <- fn[80].r4 (salt)` 这种"到底抓了谁"的答案直接印出来，不用再手动对 `fclosure8` 与 `put_loc8`。
+- **名字索引**：`get_field` / `put_field` / `get_field2;call_method` 落到 `fn` 粒度，`--grep` 直接过滤——找"谁写了 `devCode`"就是一行。
+- **`--fn N`**：单函数详情 = 变量名表 + 闭包表（含 `flags` 逐位含义与解析结果）+ `cpool` 逐项（函数项直接标 `fn[k]`）+ 读写/调用/创建关系 + `made by`。
 
 ## 6. 它怎么工作的
 
@@ -216,6 +250,7 @@ tools/                      # 表生成与标定脚本
 
 ## 11. 版本
 
+- **1.2.0** — 新增 `mv` 子命令（模块/视图地图）：入口与导出方法、对象字面量的字段/方法归类、**闭包变量的逐层绑定解析**、字段与方法的 `fn` 级名字索引（`--grep`）、单函数详情（`vars` / `closures` / `cpool` / `writes` / `reads` / `calls` / `makes` / `made by`），输出 `text|json|md`。反编译与反汇编输出不变。
 - **1.1.0** — 纯结构整理，**功能与输出完全不变**（对地图样本逐字节比对过 13 条命令的输出）：`cli.py` / `decomp.py` / `tables.py` 三个大文件拆成包，最大模块从 2877 行降到 496 行；`tables/` 一版一模块，`tools/gen_tables.py` 改为生成该包并支持增量合并；新增 `LICENSE`。
 - **1.0.0** — 首个可分发版本：rpk 解包 / 反编译 / 反汇编 / 搜索 / 自检 / 四种格式；三处 Vela 差异处理；6 张 opcode 表 + 自动选表；优先级括号、对象/数组字面量、`for...in`、`while` 循环恢复、`catch` 处理块、隐式尾 `return`、方法调用接收者括号化，以及 `veladec.pyz` 单文件分发。
   实测（地图样本 10 文件 / 2208 函数 / 129442 指令）：全量反编译 **1.8 秒**；伪代码 `goto` 从 1173 条降到 1047 条、无法恢复的 `?` 占位从 324 处降到 92 处（剩余均为不可达的 rethrow 尾巴）。

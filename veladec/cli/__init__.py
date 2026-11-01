@@ -10,6 +10,7 @@ from .commands import (cmd_info, cmd_ls, cmd_search, cmd_selftest, cmd_strings,
 
                        cmd_tables, cmd_unpack)
 from .decompile_cmd import cmd_decompile, cmd_disasm
+from .mv_cmd import cmd_mv
 from .options import Opts
 
 
@@ -21,6 +22,8 @@ def build_parser():
                '  veladec info app.rpk\n'
                '  veladec decompile app.rpk -o out/ --format js\n'
                '  veladec decompile app.rpk --format html -o out/\n'
+               '  veladec mv app.rpk --stdout\n'
+               '  veladec mv app.rpk --fn 42\n'
                '  veladec disasm app.rpk --fn 42\n'
                '  veladec search app.rpk "activation"\n'
                '  veladec ls app.rpk --grep start\n',
@@ -68,6 +71,19 @@ def build_parser():
     s.add_argument('--offsets', action='store_true',
                    help='emit a signature comment per function')
     s.set_defaults(func=cmd_decompile)
+
+    s = sub.add_parser('mv', help='module / view map: entry, methods, closures, xrefs',
+                       parents=[common])
+    s.add_argument('target')
+    s.add_argument('-o', '--out', help='write one .mv.<ext> per .jsc into this directory')
+    s.add_argument('--format', default='text', choices=('text', 'json', 'md'))
+    s.add_argument('--file', help='only files whose name contains this')
+    s.add_argument('--fn', type=int, help='detail view for one function index')
+    s.add_argument('--grep', help='only name-index rows whose name contains this')
+    s.add_argument('--names', type=int, default=40,
+                   help='max name-index rows per file (default %(default)s)')
+    s.add_argument('--stdout', action='store_true', help='force stdout even with -o')
+    s.set_defaults(func=cmd_mv)
 
     s = sub.add_parser('disasm', help='faithful instruction listing', parents=[common])
     s.add_argument('target')
