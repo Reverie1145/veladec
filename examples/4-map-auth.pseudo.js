@@ -1,5 +1,6 @@
+// auto-selected 2020-11-08 (penalty: 2019-07-09=5985, 2019-12-21=7932, 2020-01-19=7932, 2020-07-05=2125, 2020-11-08=0, 2021-03-27=0)
 // pages/auth/auth.jsc
-// decompiled by veladec 1.0.0 -- pseudo-JS, goto-preserving
+// decompiled by veladec 1.1.0 -- pseudo-JS, goto-preserving
 // --- module entry: fn[entry] $k82(a0..a0) vars=0 stack=1 bc=13B
     if (this) {
         v0 = <fn:default>;

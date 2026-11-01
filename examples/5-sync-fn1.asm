@@ -1,3 +1,4 @@
+; auto-selected 2020-11-08 (penalty: 2019-07-09=5985, 2019-12-21=7932, 2020-01-19=7932, 2020-07-05=2125, 2020-11-08=0, 2021-03-27=0)
 ; ==== pages/sync/sync.jsc  atoms=338
 
 ; --- fn[1] <null>  args=0 vars=1 closure=3 stack=4 bc=61B insns=32

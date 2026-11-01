@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Regenerate veladec/tables.py from official QuickJS source releases.
+"""Regenerate the veladec/tables package from official QuickJS source releases.
 
 Usage:
-    python3 tools/gen_tables.py --src /path/to/qjs [--out veladec/tables.py]
+    python3 tools/gen_tables.py --src /path/to/qjs [--out veladec/tables]
 
 `--src` may be either
 
@@ -11,8 +11,12 @@ Usage:
   * a flat directory of header copies named ``quickjs-opcode.h`` only
     (version taken from the parent directory name).
 
+Output is one module per release (``tables/v2020_11_08.py``, holding ``K``,
+``PRE``, ``SHORT`` and ``ATOMS``) plus a ``tables/__init__.py`` that assembles
+them back into ``OPCODE_TABLES`` / ``ATOM_TABLES``.
+
 Every version found is (re)generated; versions already present in the
-destination file but missing from ``--src`` are kept as they are, so adding one
+destination but missing from ``--src`` are kept as they are, so adding one
 new toolchain never drops the others.
 """
 import argparse
@@ -20,9 +24,51 @@ import os
 import re
 import sys
 
-DEF_RE = re.compile(r'^\s*DEF\(\s*(\w+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\w+)', re.M)
-TEMPDEF_RE = re.compile(r'^\s*def\(\s*(\w+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\w+)', re.M)
 ATOM_RE = re.compile(r'^\s*DEF\(\s*(\w+)\s*,\s*"', re.M)
+
+MODULE_HEADER = '''"""QuickJS {ver}: opcode and predefined-atom tables (generated).
+
+Do not edit by hand -- regenerate with tools/gen_tables.py.
+"""
+
+# number of "pre" opcodes; short opcodes are numbered K + index
+K = {K}
+
+PRE = [
+{pre}]
+
+SHORT = [
+{short}]
+
+ATOMS = [
+{atoms}]
+'''
+
+INIT_HEADER = '''"""QuickJS opcode / predefined-atom tables, one module per release.
+
+Source: quickjs-opcode.h + quickjs-atom.h from official QuickJS releases
+(https://bellard.org/quickjs/).  Regenerate with tools/gen_tables.py.
+
+Each ``v<release>.py`` module exposes:
+
+  ``K``      number of "pre" opcodes (short opcodes are numbered ``K + i``)
+  ``PRE``    [(name, size, npop, npush, fmt), ...] -- the plain opcodes
+  ``SHORT``  same shape -- the ``SHORT_OPCODES`` variants
+  ``ATOMS``  predefined atom names, indexed by atom id
+"""
+
+{imports}
+
+_MODULES = {{
+{table}}}
+
+OPCODE_TABLES = {{ver: {{'K': m.K, 'pre': m.PRE, 'short': m.SHORT}}
+                 for ver, m in _MODULES.items()}}
+
+ATOM_TABLES = {{ver: m.ATOMS for ver, m in _MODULES.items()}}
+
+RELEASES = tuple(_MODULES)
+'''
 
 
 def parse_opcode_header(text):
@@ -68,15 +114,19 @@ def parse_atom_header(text):
     return ATOM_RE.findall(text)
 
 
-def load_existing(path):
-    if not os.path.exists(path):
-        return {}, {}
-    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(path))))
+def load_existing(out):
+    """Merge with what is already on disk, so partial runs never drop versions."""
+    pkg = os.path.dirname(os.path.dirname(os.path.abspath(out)))
+    if pkg not in sys.path:
+        sys.path.insert(0, pkg)
     try:
-        from veladec import tables as t           # noqa
+        from veladec import tables as t           # noqa: WPS433 (runtime import)
         return dict(t.OPCODE_TABLES), dict(t.ATOM_TABLES)
+    except Exception:
+        return {}, {}
     finally:
-        sys.path.pop(0)
+        if sys.path and sys.path[0] == pkg:
+            sys.path.pop(0)
 
 
 def find_trees(src):
@@ -102,10 +152,34 @@ def find_trees(src):
     return found
 
 
+def module_name(ver):
+    return 'v' + ver.replace('-', '_').replace('.', '_')
+
+
+def render_module(ver, ops, atoms):
+    def recs(items):
+        return ''.join('    %r,\n' % (tuple(rec),) for rec in items)
+
+    return MODULE_HEADER.format(
+        ver=ver,
+        K=ops['K'],
+        pre=recs(ops['pre']),
+        short=recs(ops['short']),
+        atoms=''.join('    %r,\n' % n for n in atoms),
+    )
+
+
+def render_init(versions):
+    imports = '\n'.join('from . import %s' % module_name(v) for v in versions)
+    table = '\n'.join('    %r: %s,' % (v, module_name(v)) for v in versions)
+    return INIT_HEADER.format(imports=imports, table=table)
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--src', required=True)
-    ap.add_argument('--out', default='veladec/tables.py')
+    ap.add_argument('--out', default='veladec/tables',
+                    help='destination package directory')
     a = ap.parse_args()
 
     ops, atoms = load_existing(a.out)
@@ -119,34 +193,16 @@ def main():
         print('%-12s K=%-4d pre=%-4d short=%-3d atoms=%d'
               % (ver, K, len(pre), len(short), len(atoms.get(ver, []))))
 
-    out = ['"""Auto-generated QuickJS opcode / predefined-atom tables (do not edit by hand).',
-           '',
-           'Source: quickjs-opcode.h + quickjs-atom.h from official QuickJS releases',
-           '(https://bellard.org/quickjs/).  Regenerate with tools/gen_tables.py.',
-           '"""',
-           '',
-           'OPCODE_TABLES = {']
-    for ver in sorted(ops):
-        d = ops[ver]
-        out.append("  %r: {" % ver)
-        out.append("    'K': %d," % d['K'])
-        for key in ('pre', 'short'):
-            out.append("    '%s': [" % key)
-            for rec in d[key]:
-                out.append('      %r,' % (tuple(rec),))
-            out.append('    ],')
-        out.append('  },')
-    out.append('}')
-    out.append('')
-    out.append('ATOM_TABLES = {')
-    for ver in sorted(atoms):
-        out.append("  %r: [" % ver)
-        for n in atoms[ver]:
-            out.append('    %r,' % n)
-        out.append('  ],')
-    out.append('}')
-    open(a.out, 'w', encoding='utf-8').write('\n'.join(out) + '\n')
-    print('wrote', a.out)
+    versions = sorted(ops)
+    os.makedirs(a.out, exist_ok=True)
+    for ver in versions:
+        path = os.path.join(a.out, module_name(ver) + '.py')
+        with open(path, 'w', encoding='utf-8') as fh:
+            fh.write(render_module(ver, ops[ver], atoms.get(ver, [])))
+        print('wrote', path)
+    with open(os.path.join(a.out, '__init__.py'), 'w', encoding='utf-8') as fh:
+        fh.write(render_init(versions))
+    print('wrote', os.path.join(a.out, '__init__.py'))
 
 
 if __name__ == '__main__':

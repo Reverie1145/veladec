@@ -1,4 +1,4 @@
-# veladec 1.0.0
+# veladec 1.1.0
 
 快应用（Vela / 小米手环）`.rpk` → **`.jsc` QuickJS 字节码反编译器**。
 零依赖、单文件可分发，一条命令把打包好的字节码还原成可读的伪 JS（保留 `goto`，能安全结构化的地方自动结构化成 `if/else`）。
@@ -135,7 +135,7 @@ ln -s "$PWD/veladec.pyz" ~/.local/bin/veladec && veladec info app.rpk
 
 ### 6.3 opcode 表：内置 6 个官方 release，自动选版本
 
-`veladec/tables.py` 内嵌 2019-07-09 / 2019-12-21 / 2020-01-19 / 2020-07-05 / 2020-11-08 / 2021-03-27 六个 release 的操作码表（含短操作码区），**运行时不需要任何 quickjs 源码**。
+`veladec/tables/` 内嵌 2019-07-09 / 2019-12-21 / 2020-01-19 / 2020-07-05 / 2020-11-08 / 2021-03-27 六个 release 的操作码表（含短操作码区），一个 release 一个模块，**运行时不需要任何 quickjs 源码**。
 
 `--table auto`（默认）会对样本跑一次结构校验，按违规条数（penalty）选最小的表：
 
@@ -173,29 +173,50 @@ selftest: OK
 ## 9. 遇到新工具链怎么补
 
 1. `./veladec.pyz selftest --all-tables new.rpk` —— 看哪张表 penalty 最低。
-2. 若全都很高：取对应 release 的 `quickjs-opcode.h`，用 `tools/gen_tables.py` 生成新表加进 `veladec/tables.py`。
+2. 若全都很高：取对应 release 的 `quickjs-opcode.h`，用 `tools/gen_tables.py --src <放源码树的目录>` 生成新模块放进 `veladec/tables/`。
 3. 若 atom 名字整体偏移：用「字段位的 atom 必须是标识符」做扫描，二分 `--atom-base`，正确值处 ident 比例会跳到 1.0（脚本见 `tools/calib_atom_base.py`）。
 4. 若跳转整体错位：`--no-structure` 先看 `.asm`，确认是相对/绝对基准问题再改 `ins.resolve_label`。
 
 ## 10. 目录
 
+每个模块控制在 500 行以内：数据（opcode 表）一版一文件，逻辑按职责拆包。
+
 ```
-veladec/                 # 源码包
-  cli.py                 # 命令行
-  ser.py                 # .jsc 序列化解析
-  ins.py                 # opcode 表 / 解码 / 跳转解析 / 校验
-  decomp.py              # 伪代码渲染、结构化
-  builtins.py            # 内置 atom 名表
-  tables.py              # 内嵌 6 个 release 的 opcode / atom 表（自动生成）
-  rpk.py                 # rpk / 目录 / 单文件目标解析
-veladec.py               # 入口
-veladec.pyz              # 单文件可执行（无需安装）
-examples/                # 两个真实样本的输出片段
-tools/                   # 表生成与标定脚本
+veladec/                    # 源码包
+  cli/                      # 命令行
+    __init__.py             #   argparse 定义 + main()
+    options.py              #   选项对象、目标加载、自动选表
+    asm.py                  #   指令列表（反汇编文本）
+    formats.py              #   js / md / json / html 四种输出
+    commands.py             #   info / unpack / ls / strings / search / selftest / tables
+    decompile_cmd.py        #   decompile / disasm
+  decomp/                   # 反编译：线性栈恢复 + 保守结构化
+    __init__.py             #   对外只暴露 FuncRenderer / decompile_file / jsstr
+    expr.py                 #   字面量、优先级、栈值渲染
+    structure.py            #   跳转目标、span 发现、if/else、try/catch
+    dispatch.py             #   逐 opcode 翻译表
+    renderer.py             #   FuncRenderer 主循环
+  tables/                   # 6 个 release 的 opcode / atom 表（自动生成，一版一模块）
+    __init__.py             #   汇总成 OPCODE_TABLES / ATOM_TABLES
+    v2019_07_09.py          #   K / PRE / SHORT / ATOMS
+    v2019_12_21.py
+    v2020_01_19.py
+    v2020_07_05.py
+    v2020_11_08.py
+    v2021_03_27.py
+  ser.py                    # .jsc 序列化解析
+  ins.py                    # opcode 表 / 解码 / 跳转解析 / 校验
+  builtins.py               # 内置 atom 名表
+  rpk.py                    # rpk / 目录 / 单文件目标解析
+veladec.py                  # 入口
+veladec.pyz                 # 单文件可执行（无需安装）
+examples/                   # 两个真实样本的输出片段
+tools/                      # 表生成与标定脚本
 ```
 
 ## 11. 版本
 
+- **1.1.0** — 纯结构整理，**功能与输出完全不变**（对地图样本逐字节比对过 13 条命令的输出）：`cli.py` / `decomp.py` / `tables.py` 三个大文件拆成包，最大模块从 2877 行降到 496 行；`tables/` 一版一模块，`tools/gen_tables.py` 改为生成该包并支持增量合并；新增 `LICENSE`。
 - **1.0.0** — 首个可分发版本：rpk 解包 / 反编译 / 反汇编 / 搜索 / 自检 / 四种格式；三处 Vela 差异处理；6 张 opcode 表 + 自动选表；优先级括号、对象/数组字面量、`for...in`、`while` 循环恢复、`catch` 处理块、隐式尾 `return`、方法调用接收者括号化，以及 `veladec.pyz` 单文件分发。
   实测（地图样本 10 文件 / 2208 函数 / 129442 指令）：全量反编译 **1.8 秒**；伪代码 `goto` 从 1173 条降到 1047 条、无法恢复的 `?` 占位从 324 处降到 92 处（剩余均为不可达的 rethrow 尾巴）。
 
